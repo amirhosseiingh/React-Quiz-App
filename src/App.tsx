@@ -1,11 +1,13 @@
-import AppRouter from "./routes/AppRouter"
+import React from "react";
+import { QuizProvider } from "./contexts/QuizContext";
+import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
-    <div>
+    <QuizProvider>
       <AppRouter />
-    </div>
-  )
+    </QuizProvider>
+  );
 }
 
 export default App;
