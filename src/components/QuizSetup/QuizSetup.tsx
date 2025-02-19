@@ -8,7 +8,7 @@ interface Category {
   name: string;
 }
 
-const QuizSetup: React.FC = () => {
+const QuizSetup = () => {
   const navigate = useNavigate();
   const quizContext = useContext(QuizContext);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -21,29 +21,32 @@ const QuizSetup: React.FC = () => {
   useEffect(() => {
     getCategoryData()
       .then(setCategories)
-      .catch((err) => console.error('Error fetching categories:', err));
+      .catch((error) => console.error(error));
   }, []);
 
   const validateForm = () => {
     const newErrors: typeof errors = {};
-    if (count < 5 || count > 50) newErrors.count = 'Enter a number between 5 and 50';
-    if (!category) newErrors.category = 'Select a category';
-    if (!difficulty) newErrors.difficulty = 'Select a difficulty';
+    if (count < 5 || count > 50) newErrors.count = 'Please enter a number between 5 and 50';
+    if (!category) newErrors.category = 'Please select a category';
+    if (!difficulty) newErrors.difficulty = 'Please select a difficulty';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!validateForm() || !quizContext) return;
 
     setLoading(true);
+
     try {
       const questions = await getQuizData(count, category, difficulty);
+
       quizContext.dispatch({ type: 'SET_QUESTIONS', payload: questions });
       navigate('/questions');
     } catch (error) {
-      console.error('Error fetching questions:', error);
+      console.error(error);
     }
     setLoading(false);
   };
@@ -76,9 +79,9 @@ const QuizSetup: React.FC = () => {
               className="mt-1 w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
             >
               <option value="">Select category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
+              {categories.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
             </select>
@@ -101,7 +104,6 @@ const QuizSetup: React.FC = () => {
             {errors.difficulty && <p className="mt-1 text-sm text-red-500">{errors.difficulty}</p>}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
