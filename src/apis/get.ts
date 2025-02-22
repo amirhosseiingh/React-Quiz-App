@@ -1,7 +1,7 @@
 import { BASE_URL_QUIZ } from './const';
 import { BASE_URL_CATEGORY } from './const';
 
-export const getQuizData = async (count, category, difficulty) => {
+export const getQuizData = async (count : number, category : string, difficulty : string) => {
   const data = await fetch(
     `${BASE_URL_QUIZ}?amount=${count}&category=${category}&difficulty=${difficulty}`
   );

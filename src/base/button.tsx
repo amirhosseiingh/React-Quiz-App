@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface IButtonProps {
-  onClick: () => void;
+interface ButtonProps {
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
 }
 
-const Button = ({ onClick, children, className = '', disabled = false }: IButtonProps) => {
+const Button = ({ onClick, children, className = '', disabled = false }: ButtonProps) => {
   return (
     <button
       onClick={onClick}

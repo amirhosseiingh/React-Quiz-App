@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter as Router } from 'react-router';
+import { Route, Routes } from 'react-router';
 import WelcomePage from '../components/Welcome/WelcomePage';
 import QuizSetup from '../components/QuizSetup/QuizSetup';
 import Question from '../components/QuizPage/Question';
