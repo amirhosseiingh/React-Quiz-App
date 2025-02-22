@@ -1,4 +1,4 @@
-import React from "react";
+
 import { QuizProvider } from "./contexts/QuizContext";
 import AppRouter from "./routes/AppRouter";
 

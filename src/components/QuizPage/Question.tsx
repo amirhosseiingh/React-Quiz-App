@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
-import { QuizContext } from "../../contexts/QuizContext";
+import  { useContext, useState } from 'react';
+import { QuizContext } from '../../contexts/QuizContext';
+import { useNavigate } from 'react-router';
 
 const Question = () => {
   const context = useContext(QuizContext);
@@ -7,26 +8,33 @@ const Question = () => {
     throw new Error("Question must be used within a QuizProvider");
   }
   const { state, dispatch } = context;
+  const navigate = useNavigate();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
 
   if (state.questions.length === 0) {
-    return <div className="text-center text-white text-xl">Loading...</div>;
+    return <div  className="text-center text-white text-xl">Loading... </div>;
   }
 
   const currentQuestion = state.questions[state.currentQuestionIndex];
   const allAnswers = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer].sort();
-
+  const handleNextClick = () => {
+    if (state.currentQuestionIndex + 1 < state.questions.length) {
+      dispatch({ type: "NEXT_QUESTION" });
+      setSelectedAnswer(null);
+      setFeedback(null);
+    } else {
+      navigate('/results');
+    }
+  };
   const handleAnswerClick = (answer: string) => {
     setSelectedAnswer(answer);
-    setFeedback(answer === currentQuestion.correct_answer ? "Correct!" : "Incorrect.");
+    setFeedback(answer === currentQuestion.correct_answer ? "Correct! ✅" : "Incorrect. ❌");
+    
+    dispatch({ type: 'SET_USER_ANSWER', payload: answer });
   };
 
-  const handleNextClick = () => {
-    dispatch({ type: "NEXT_QUESTION" });
-    setSelectedAnswer(null);
-    setFeedback(null);
-  };
+
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-400 to-purple-600 p-4">

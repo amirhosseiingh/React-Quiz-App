@@ -1,4 +1,4 @@
-import React from "react";
+
 import { QuizProvider } from "../../contexts/QuizContext";
 import Question from "./Question";
 

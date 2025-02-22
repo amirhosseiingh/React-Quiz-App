@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { motion } from 'framer-motion';
 import { QuizContext } from '../../contexts/QuizContext';
 import { getCategoryData, getQuizData } from '../../apis/get';
+import Button from '../../base/button';
+import Input from '../../base/input';
 
 interface Category {
   id: number;
@@ -26,9 +29,9 @@ const QuizSetup = () => {
 
   const validateForm = () => {
     const newErrors: typeof errors = {};
-    if (count < 5 || count > 50) newErrors.count = 'Please enter a number between 5 and 50';
-    if (!category) newErrors.category = 'Please select a category';
-    if (!difficulty) newErrors.difficulty = 'Please select a difficulty';
+    if (count < 5 || count > 50) newErrors.count = 'Enter a number between 5 and 50';
+    if (!category) newErrors.category = 'Select a category';
+    if (!difficulty) newErrors.difficulty = 'Select a difficulty';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -42,7 +45,6 @@ const QuizSetup = () => {
 
     try {
       const questions = await getQuizData(count, category, difficulty);
-
       quizContext.dispatch({ type: 'SET_QUESTIONS', payload: questions });
       navigate('/questions');
     } catch (error) {
@@ -52,31 +54,36 @@ const QuizSetup = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200 p-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
-        <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">Quiz Setup</h2>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-300 to-purple-500 p-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-lg rounded-2xl bg-white/40 backdrop-blur-md p-6 shadow-xl"
+      >
+        <h2 className="mb-6 text-center text-3xl font-bold text-white drop-shadow-lg">Quiz Setup</h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Number of Questions */}
           <div>
-            <label className="block text-gray-700">Number of Questions</label>
-            <input
+            <label className="block text-white">Number of Questions</label>
+            <Input
               type="number"
               value={count}
               onChange={(e) => setCount(Number(e.target.value))}
-              min="5"
-              max="50"
-              className="mt-1 w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
+              min={5}
+              max={50}
+              className="mt-1 w-full rounded-lg bg-white/70 text-gray-900 p-3 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
             />
             {errors.count && <p className="mt-1 text-sm text-red-500">{errors.count}</p>}
           </div>
 
           {/* Category */}
           <div>
-            <label className="block text-gray-700">Category</label>
+            <label className="block text-white">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
+              className="mt-1 w-full rounded-lg bg-white/70 text-gray-900 p-3 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
             >
               <option value="">Select category</option>
               {categories.map((item) => (
@@ -90,11 +97,11 @@ const QuizSetup = () => {
 
           {/* Difficulty */}
           <div>
-            <label className="block text-gray-700">Difficulty</label>
+            <label className="block text-white">Difficulty</label>
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
+              className="mt-1 w-full rounded-lg bg-white/70 text-gray-900 p-3 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-400"
             >
               <option value="">Select difficulty</option>
               <option value="easy">Easy</option>
@@ -104,17 +111,17 @@ const QuizSetup = () => {
             {errors.difficulty && <p className="mt-1 text-sm text-red-500">{errors.difficulty}</p>}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full rounded-lg bg-purple-500 p-3 text-white font-semibold shadow-md transition-all duration-200 hover:bg-purple-600 ${
-              loading ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-          >
-            {loading ? 'Loading...' : 'Start Quiz'}
-          </button>
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Button
+              onClick={handleSubmit}
+              className={`w-full bg-purple-600 text-white font-semibold py-3 rounded-lg shadow-lg transition-all ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+              disabled={loading}
+            >
+              {loading ? 'Loading...' : 'Start Quiz'}
+            </Button>
+          </motion.div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };
