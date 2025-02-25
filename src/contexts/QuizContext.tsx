@@ -19,7 +19,7 @@ export const QuizProvider = ({ children }: QuizProviderProps) => {
     userAnswers: [],
     score: 0,
   });
-
+  // sent value to quiz context
   return (
     <QuizContext.Provider value={{ state, dispatch }}>
       {children}

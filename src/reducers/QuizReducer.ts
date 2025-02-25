@@ -1,3 +1,4 @@
+// type for question
 export interface Question {
     category: string;
     correct_answer: string;
@@ -6,14 +7,14 @@ export interface Question {
     question: string;
     type: string;
   }
-  
+// type for all the quiz
   export interface QuizState {
     questions: Question[];
     currentQuestionIndex: number;
     userAnswers: string[];
     score: number;
   }
-  
+// type for manager quiz 
   export interface QuizAction {
     type: 'SET_QUESTIONS' | 'SET_USER_ANSWER' | 'NEXT_QUESTION' | 'CALCULATE_SCORE';
     payload?: any;
@@ -34,16 +35,21 @@ export interface Question {
         const updatedAnswers = [...state.userAnswers];
         updatedAnswers[state.currentQuestionIndex] = action.payload;
         return { ...state, userAnswers: updatedAnswers };
+
       case 'NEXT_QUESTION':
-        return { ...state, currentQuestionIndex: state.currentQuestionIndex + 1 };
+        return { ...state, currentQuestionIndex:  state.currentQuestionIndex + 1 };
       case 'CALCULATE_SCORE':
-        const correctAnswersCount = state.questions.reduce((count, question, index) => {
-          if (question.correct_answer === state.userAnswers[index]) {
+        const correctAnswersCount = state.questions.reduce((count,  question, index)    => {
+
+          if (question.correct_answer === state.userAnswers [index]) {
+
             count++;
           }
           return count;
-        }, 0);
+        },
+         0);
         const score = (correctAnswersCount / state.questions.length) * 100;
+        
         return { ...state, score: score };
       default:
         return state;

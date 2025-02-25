@@ -3,21 +3,26 @@ import { QuizContext } from '../../contexts/QuizContext';
 import { useNavigate } from 'react-router';
 
 const Question = () => {
+
   const context = useContext(QuizContext);
   if (!context) {
-    throw new Error("Question must be used within a QuizProvider");
+    throw new Error("there is no question");
   }
+
   const { state, dispatch } = context;
   const navigate = useNavigate();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
+
 
   if (state.questions.length === 0) {
     return <div  className="text-center text-white text-xl">Loading... </div>;
   }
 
   const currentQuestion = state.questions[state.currentQuestionIndex];
+
   const allAnswers = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer].sort();
+  
   const handleNextClick = () => {
     if (state.currentQuestionIndex + 1 < state.questions.length) {
       dispatch({ type: "NEXT_QUESTION" });
@@ -27,6 +32,7 @@ const Question = () => {
       navigate('/results');
     }
   };
+  
   const handleAnswerClick = (answer: string) => {
     setSelectedAnswer(answer);
     setFeedback(answer === currentQuestion.correct_answer ? "Correct! ✅" : "Incorrect. ❌");

@@ -1,11 +1,13 @@
 import { Box, Button, Heading, Text, VStack, Container } from "@chakra-ui/react";
 import { Link } from "react-router"; 
 const WelcomePage = () => {
+
   return (
     <Box
       height="100vh" 
       bgGradient="linear(to-r, purple.500, pink.500)" 
     >
+
       <Container
         maxW="container.md"
         centerContent
@@ -23,6 +25,7 @@ const WelcomePage = () => {
           bg="rgba(255, 255, 255, 0.2)" 
           color="white"
         >
+          
           <Heading as="h1" size="2xl" fontWeight="bold">
             Welcome to Quiz App
           </Heading>

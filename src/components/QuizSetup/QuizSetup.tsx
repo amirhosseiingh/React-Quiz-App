@@ -11,21 +11,24 @@ interface Category {
 }
 
 const QuizSetup = () => {
+
   const navigate = useNavigate();
   const quizContext = useContext(QuizContext);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories ] = useState<Category[]>([]);
   const [count, setCount] = useState<number>(5);
   const [category, setCategory] = useState<string>('');
-  const [difficulty, setDifficulty] = useState<string>('');
-  const [loading, setLoading] = useState(false);
+  const [difficulty, setDifficulty ] = useState<string>('');
+  const [loading,  setLoading ] = useState(false);
   const [errors, setErrors] = useState<{ count?: string; category?: string; difficulty?: string }>({});
 
   useEffect(() => {
     getCategoryData()
       .then(setCategories)
-      .catch((error) => console.error(error));
+      .catch((error) => console.log(error));
+
   }, []);
 
+  // validation form
   const validateForm = () => {
     const newErrors: typeof errors = {};
     if (count < 5 || count > 50) newErrors.count = 'Please enter a number between 5 and 50';
@@ -48,7 +51,7 @@ const QuizSetup = () => {
       quizContext.dispatch({ type: 'SET_QUESTIONS', payload: questions });
       navigate('/questions');
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
     setLoading(false);
   };
@@ -107,7 +110,8 @@ const QuizSetup = () => {
             className={`w-full bg-purple-500 text-white font-semibold shadow-md ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Start Quiz'}
+            {loading ? 'Loading...' : 
+            'Start Quiz'}
           </Button>
         </form>
       </div>
